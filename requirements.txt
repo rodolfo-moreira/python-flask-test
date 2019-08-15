@@ -1,2 +1,2 @@
 flask==1.1.1
-WSGIServer
+wsgiserver==1.3
