@@ -1,5 +1,4 @@
 from flask import Flask
-from gevent.pywsgi import WSGIServer
 
 app = Flask(__name__)
 
@@ -7,5 +6,4 @@ app = Flask(__name__)
 def index():
     return 1
 
-http_server = WSGIServer(('', 5000), app)
-http_server.serve_forever()
+app.run(debug = True)
