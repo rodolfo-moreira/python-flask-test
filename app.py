@@ -2,6 +2,9 @@ import os
 import logging
 import socket
 from flask import Flask, jsonify
+import pandas as pd
+import numpy as np
+import tensorflow as tl
 
 HOST_NAME = os.environ.get('OPENSHIFT_APP_DNS', 'localhost')
 APP_NAME = os.environ.get('OPENSHIFT_APP_NAME', 'flask')
@@ -23,9 +26,13 @@ def hello():
         'host': socket.gethostname()
     })
 
-@app.route('/teste')
+@app.route('/iris')
 def teste():
-    return 'teste'
+    iris = pd.read_csv("data/Iris.csv")
+    iris.head(n=7)
+    return app.response_class(iris, content_type='application/json')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=PORT)
+
+#app.run(debug=True)
