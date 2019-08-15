@@ -23,5 +23,9 @@ def hello():
         'host': socket.gethostname()
     })
 
+@app.route('/teste')
+def teste():
+    return 'teste'
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=PORT)
