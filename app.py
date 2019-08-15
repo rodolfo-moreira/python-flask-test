@@ -5,4 +5,4 @@ app = Flask(__name__)
 def index():
     return 1
 
-app.run(debug=True)
+app.run()
