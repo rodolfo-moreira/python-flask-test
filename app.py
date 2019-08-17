@@ -83,13 +83,13 @@ def model():
 
     modelo.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
-    modelo.fit(imagens_treino, identificacoes_treino, epochs=15, batch_size=128, validation_split=0.2)
+    modelo.fit(imagens_treino, identificacoes_treino, epochs=30, batch_size=128, validation_split=0.2)
 
     score = modelo.evaluate(imagens_treino, identificacoes_treino, batch_size=128)
 
     print(score)
 
-    return "OK"
+    return jsonify(score)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=PORT)
