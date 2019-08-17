@@ -7,6 +7,7 @@ import numpy as np
 import tensorflow as tl
 from keras.models import Sequential
 from keras.layers import Dense
+#from tensorflow.keras.models import
 
 HOST_NAME = os.environ.get('OPENSHIFT_APP_DNS', 'localhost')
 APP_NAME = os.environ.get('OPENSHIFT_APP_NAME', 'flask')
@@ -66,6 +67,23 @@ def keras():
 
 @app.route('/model')
 def model():
+    dataset = keras.datasets.fashion_mnist
+    ((imagens_treino, identificacoes_treino), (imagens_teste, identificacoes_teste)) = dataset.load_data()
+    imagens_treino = imagens_treino / 255.0
+    modelo = keras.Sequential([
+        keras.layers.Flatten(input_shape=(28, 28)),
+        keras.layers.Dense(1024, activation=tensorflow.nn.relu),
+        keras.layers.Dense(512, activation=tensorflow.nn.relu),
+        keras.layers.Dense(256, activation=tensorflow.nn.relu),
+        keras.layers.Dense(128, activation=tensorflow.nn.relu),
+        keras.layers.Dropout(0.1),
+        keras.layers.Dense(10, activation=tensorflow.nn.softmax)
+    ])
+
+    modelo.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+
+    historico = modelo.fit(imagens_treino, identificacoes_treino, epochs=30, batch_size=128, validation_split=0.2)
+
     return 'OK'
 
 #if __name__ == '__main__':
