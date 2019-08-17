@@ -19,6 +19,10 @@ HOME_DIR = os.environ.get('OPENSHIFT_HOMEDIR', os.getcwd())
 log = logging.getLogger(__name__)
 app = Flask(__name__)
 
+((imagens_treino, identificacoes_treino), (imagens_teste, identificacoes_teste)) = fashion_mnist.load_data()
+
+imagens_treino = imagens_treino / 255.0
+
 @app.route('/')
 def hello():
     return jsonify({
@@ -69,8 +73,8 @@ def keras():
 @app.route('/model')
 def model():
     #dataset = keras.datasets.fashion_mnist
-    ((imagens_treino, identificacoes_treino), (imagens_teste, identificacoes_teste)) = fashion_mnist.load_data()
-    imagens_treino = imagens_treino / 255.0
+
+
     modelo = Sequential([
         Flatten(input_shape=(28, 28)),
         Dense(1024, activation=tl.nn.relu),
@@ -83,7 +87,7 @@ def model():
 
     modelo.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
-    modelo.fit(imagens_treino, identificacoes_treino, epochs=30, batch_size=128, validation_split=0.2)
+    modelo.fit(imagens_treino, identificacoes_treino, epochs=1, batch_size=128, validation_split=0.2)
 
     score = modelo.evaluate(imagens_treino, identificacoes_treino, batch_size=128)
 
@@ -91,7 +95,7 @@ def model():
 
     return jsonify(score)
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=PORT)
+#if __name__ == '__main__':
+#    app.run(host='0.0.0.0', port=PORT)
 
-#app.run(debug=True)
+app.run(debug=True)
